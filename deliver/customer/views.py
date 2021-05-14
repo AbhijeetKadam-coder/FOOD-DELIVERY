@@ -106,9 +106,19 @@ class OrderConfirmation(View):
         context = {
             'pk': order.pk,
             'items': order.items,
-            'price': order.price,
+            'price': order.price
         }
 
+        body = (f'Thank you {order.name} for your order! Payment is successfully done.\n'
+                f'Your total: {order.price}\n')
+
+        send_mail(
+            "Food Payment to Abby's",
+            body,
+            'example@example.com',
+            [order.email],
+            fail_silently=False
+        )
         return render(request, 'customer/order_confirmation.html', context)
 
     def post(self, request, pk, *args, **kwargs):
